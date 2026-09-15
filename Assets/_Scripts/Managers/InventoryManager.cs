@@ -30,4 +30,9 @@ public class InventoryManager : MonoBehaviour
             // TODO: UIManager refresh active tab
         }
     }
+
+    public List<CollectableSO> GetCollectedItems()
+    {
+        return _collectedItems;
+    }
 }

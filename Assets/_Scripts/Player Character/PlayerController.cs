@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         _inputActions.Player.Sprint.started += ctx => OnSprintStart();
         _inputActions.Player.Sprint.canceled += ctx => OnSprintCancel();
         _inputActions.Player.Interact.performed += ctx => OnInteract();
-
+        _inputActions.Player.ToggleInventory.performed += ctx => UIManager.Instance.ToggleInventory();
         _inputActions.Player.LightToggle.performed += ctx => lantern.ToggleLantern();
     }
 
