@@ -153,7 +153,9 @@ public class PlayerController : MonoBehaviour
         if (interactable != null)
         {
             _currentInteractable = interactable;
-            // TODO: UI Canvas show the prompt
+            
+            // Show the prompt
+            UIManager.Instance.ShowPrompt(interactable.GetPromptIcon());
         }      
     }
 
@@ -162,7 +164,9 @@ public class PlayerController : MonoBehaviour
         if (other.GetComponent<IInteractable>() != null)
         {
             _currentInteractable = null;
-            // TODO: UI Canvas hide prompt
+            
+            // Hide the prompt
+            UIManager.Instance.HidePrompt();
         }
     }
 }

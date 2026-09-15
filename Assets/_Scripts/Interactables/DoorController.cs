@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour, IInteractable
@@ -6,6 +7,9 @@ public class DoorController : MonoBehaviour, IInteractable
     [Header("Room Transition")]
     [SerializeField] private Transform _targetSpawnPoint;
     [SerializeField] private Collider _targetRoomCollider;
+
+    [Header("UI Prompt")]
+    [SerializeField] private Sprite _doorPromptSprite;
 
     // --------------------------------------------------------
 
@@ -19,5 +23,10 @@ public class DoorController : MonoBehaviour, IInteractable
         {
             Debug.LogWarning("Door is missing transition references!");
         }
+    }
+
+    public Sprite GetPromptIcon()
+    {
+        return _doorPromptSprite;
     }
 }

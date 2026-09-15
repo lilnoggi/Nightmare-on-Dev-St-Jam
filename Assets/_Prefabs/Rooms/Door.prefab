@@ -126,3 +126,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
   _targetSpawnPoint: {fileID: 0}
+  _targetRoomCollider: {fileID: 0}
+  _doorPromptSprite: {fileID: 21300000, guid: 85fea7325d3096e4e916ec88b20b8a55, type: 3}
