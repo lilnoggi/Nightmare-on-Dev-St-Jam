@@ -6,7 +6,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; }
 
     // Master List of everything the player has collected
-    [SerializeField] private List<CollectibleSO> _collectedItems = new List<CollectibleSO>();
+    [SerializeField] private List<CollectableSO> _collectedItems = new List<CollectableSO>();
 
     // ----------------------------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ public class InventoryManager : MonoBehaviour
         Instance = this;
     }
 
-    public void AddItem(CollectibleSO item)
+    public void AddItem(CollectableSO item)
     {
         if (!_collectedItems.Contains(item))
         {
