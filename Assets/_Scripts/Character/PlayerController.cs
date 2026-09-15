@@ -1,49 +1,53 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     public enum PlayerState { Exploration, Sprinting, Hiding }
-    public PlayerState currentState = PlayerState.Exploration;
+    [SerializeField] private PlayerState _currentState = PlayerState.Exploration;
 
     [Header("Movement Settings")]
-    public float walkSpeed = 3f;
-    public float sprintSpeed = 6f;
-    public float gravity = -9.81f;
+    [SerializeField] private float _walkSpeed = 3f;
+    [SerializeField] private float _sprintSpeed = 6f;
+    [SerializeField] private float _gravity = -9.81f;
 
     [Header("Stamina System")]
-    public float maxStamina = 100f;
-    public float currentStamina;
-    public float staminaDrainRate = 25f;
-    public float staminaRegenRate = 10f;
-    public float hidingRegenMultiplier = 2.5f; 
+    [SerializeField] private float _maxStamina = 100f;
+    [SerializeField] private float _currentStamina;
+    [SerializeField] private float _staminaDrainRate = 25f;
+    [SerializeField] private float _staminaRegenRate = 10f;
+    [SerializeField] private float _hidingRegenMultiplier = 2.5f; 
 
-    private CharacterController controller;
-    private InputSystem_Actions inputActions; 
-    private float currentMoveInput;
-    private Vector3 velocity;
+    [Header("References")]
+    [SerializeField] private LanternController lantern;
+
+    private CharacterController _controller;
+    private InputSystem_Actions _inputActions; 
+    private float _currentMoveInput;
+    private Vector3 _velocity;
 
     // ---------------------------------------------------------------
 
     private void Awake()
     {
-        controller = GetComponent<CharacterController>();
-        inputActions = new InputSystem_Actions();
-        currentStamina = maxStamina;
+        _controller = GetComponentInChildren<CharacterController>();
+        _inputActions = new InputSystem_Actions();
+        _currentStamina = _maxStamina;
 
         // Map the Input System callbacks
-        inputActions.Player.Sprint.started += ctx => OnSprintStart();
-        inputActions.Player.Sprint.canceled += ctx => OnSprintCancel();
-        inputActions.Player.Interact.performed += ctx => OnInteract();
+        _inputActions.Player.Sprint.started += ctx => OnSprintStart();
+        _inputActions.Player.Sprint.canceled += ctx => OnSprintCancel();
+        _inputActions.Player.Interact.performed += ctx => OnInteract();
+
+        _inputActions.Player.LightToggle.performed += ctx => lantern.ToggleLantern();
     }
 
-    private void OnEnable() => inputActions.Enable();
-    private void OnDisable() => inputActions.Disable();
+    private void OnEnable() => _inputActions.Enable();
+    private void OnDisable() => _inputActions.Disable();
 
     private void Update()
     {
-        currentMoveInput = inputActions.Player.Move.ReadValue<float>();
+        _currentMoveInput = _inputActions.Player.Move.ReadValue<float>();
         
         HandleStamina();
         HandleMovement();
@@ -51,65 +55,76 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (currentState == PlayerState.Hiding)
+        if (_currentState == PlayerState.Hiding)
         {
             return; // Lock movement if hiding
         }
 
-        float speed = (currentState == PlayerState.Sprinting) ? sprintSpeed : walkSpeed;
+        float speed = (_currentState == PlayerState.Sprinting) ? _sprintSpeed : _walkSpeed;
         
         // 2.5D Horizontal Movement (X axis)
-        Vector3 move = new Vector3(currentMoveInput, 0f, 0f);
-        controller.Move(move * speed * Time.deltaTime);
+        Vector3 move = new Vector3(_currentMoveInput, 0f, 0f);
+        _controller.Move(move * speed * Time.deltaTime);
+
+        // Flip Logic
+        // Rotate the controller's transform based on input direction
+        if (_currentMoveInput > 0.1f)
+        {
+            _controller.transform.rotation = Quaternion.Euler(0f, 0f, 0f); // Face Right
+        }
+        else if (_currentMoveInput < -0.1f)
+        {
+            _controller.transform.rotation = Quaternion.Euler(0f, 180f, 0f); // Face Left
+        }
 
         // Apply simple gravity
-        if (controller.isGrounded && velocity.y < 0)
+        if (_controller.isGrounded && _velocity.y < 0)
         {
-            velocity.y = -2f;
+            _velocity.y = -2f;
         }
-        
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+
+        _velocity.y += _gravity * Time.deltaTime;
+        _controller.Move(_velocity * Time.deltaTime);
     }
 
     private void HandleStamina()
     {
-        if (currentState == PlayerState.Sprinting)
+        if (_currentState == PlayerState.Sprinting)
         {
             // Only drain if actively pressing movement keys
-            if (Mathf.Abs(currentMoveInput) > 0.1f) 
+            if (Mathf.Abs(_currentMoveInput) > 0.1f) 
             {
-                currentStamina -= staminaDrainRate * Time.deltaTime;
-                if (currentStamina <= 0)
+                _currentStamina -= _staminaDrainRate * Time.deltaTime;
+                if (_currentStamina <= 0)
                 {
-                    currentStamina = 0;
-                    currentState = PlayerState.Exploration; // Exhausted, force walk
+                    _currentStamina = 0;
+                    _currentState = PlayerState.Exploration; // Exhausted, force walk
                 }
             }
         }
         else
         {
             // Regenerate based on current state
-            float regenRate = (currentState == PlayerState.Hiding) ? staminaRegenRate * hidingRegenMultiplier : staminaRegenRate;
-            currentStamina += regenRate * Time.deltaTime;
+            float regenRate = (_currentState == PlayerState.Hiding) ? _staminaRegenRate * _hidingRegenMultiplier : _staminaRegenRate;
+            _currentStamina += regenRate * Time.deltaTime;
         }
         
-        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+        _currentStamina = Mathf.Clamp(_currentStamina, 0, _maxStamina);
     }
 
     private void OnSprintStart()
     {
-        if (currentState == PlayerState.Exploration && currentStamina > 0)
+        if (_currentState == PlayerState.Exploration && _currentStamina > 0)
         {
-            currentState = PlayerState.Sprinting;
+            _currentState = PlayerState.Sprinting;
         }
     }
 
     private void OnSprintCancel()
     {
-        if (currentState == PlayerState.Sprinting)
+        if (_currentState == PlayerState.Sprinting)
         {
-            currentState = PlayerState.Exploration;
+            _currentState = PlayerState.Exploration;
         }
     }
 
