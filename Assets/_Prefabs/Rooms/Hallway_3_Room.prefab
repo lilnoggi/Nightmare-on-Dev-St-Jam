@@ -354,7 +354,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1084502019626558227, guid: 9c492d176f922d940b8d04c466e67ab7, type: 3}
       propertyPath: m_Name
-      value: Dorm_Door
+      value: Dorm_Door_a
       objectReference: {fileID: 0}
     - target: {fileID: 2391791196670529092, guid: 9c492d176f922d940b8d04c466e67ab7, type: 3}
       propertyPath: m_LocalPosition.x
