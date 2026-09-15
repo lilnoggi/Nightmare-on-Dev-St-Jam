@@ -1,24 +1,23 @@
+using System;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour, IInteractable
 {
     [Header("Room Transition")]
     [SerializeField] private Transform _targetSpawnPoint;
-
-    // TODO: Add Cinemachine bounding box reference here for LevelManager
+    [SerializeField] private Collider _targetRoomCollider;
 
     // --------------------------------------------------------
 
     public void Interact()
     {
-        if (_targetSpawnPoint != null)
+        if (_targetSpawnPoint != null && _targetRoomCollider != null)
         {
-            Debug.Log($"Transitioning player to {_targetSpawnPoint.gameObject.name}");
-            // TODO: Call LevelManager fade-to-black and teleport logic here
+            LevelManager.Instance.TransitionToRoom(_targetSpawnPoint, _targetRoomCollider);
         }
         else
         {
-            Debug.LogWarning("Door has not target spawn point set!");
+            Debug.LogWarning("Door is missing transition references!");
         }
     }
 }
