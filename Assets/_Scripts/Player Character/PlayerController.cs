@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController _controller;
     private InputSystem_Actions _inputActions; 
+    private IInteractable _currentInteractable;
     private float _currentMoveInput;
     private Vector3 _velocity;
 
@@ -30,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        _controller = GetComponentInChildren<CharacterController>();
+        _controller = GetComponent<CharacterController>();
         _inputActions = new InputSystem_Actions();
         _currentStamina = _maxStamina;
 
@@ -130,6 +131,38 @@ public class PlayerController : MonoBehaviour
 
     private void OnInteract()
     {
-        Debug.Log("Interact Pressed - Firing door/hiding logic!");
+        if (_currentState == PlayerState.Hiding)
+        {
+            return;
+            // TODO: Exit hiding with E
+        }
+
+        if (_currentInteractable != null)
+        {
+            _currentInteractable.Interact();
+        }
+        else
+        {
+            Debug.Log("Nothing to interact with.");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IInteractable interactable = other.GetComponent<IInteractable>();
+        if (interactable != null)
+        {
+            _currentInteractable = interactable;
+            // TODO: UI Canvas show the prompt
+        }      
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<IInteractable>() != null)
+        {
+            _currentInteractable = null;
+            // TODO: UI Canvas hide prompt
+        }
     }
 }
