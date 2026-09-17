@@ -45,6 +45,7 @@ public class LevelManager : MonoBehaviour
     public void TransitionToRoom(Transform targetSpawn, Collider targetRoomBounds)
     {
         StartCoroutine(TransitionRoutine(targetSpawn, targetRoomBounds));
+        Debug.Log($"Room Entered: {targetSpawn.gameObject.name}.");
     }
 
     private IEnumerator TransitionRoutine(Transform targetSpawn, Collider targetRoomBounds)
