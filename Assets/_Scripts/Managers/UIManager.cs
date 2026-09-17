@@ -52,6 +52,12 @@ public class UIManager : MonoBehaviour
     
     public void ToggleInventory()
     {
+        // Prevent opening if game is already paused
+        if (!_isInventoryOpen && Time.timeScale == 0f)
+        {
+            return;
+        }
+        
         _isInventoryOpen = !_isInventoryOpen;
         _inventoryCanvas.SetActive(_isInventoryOpen);
 
