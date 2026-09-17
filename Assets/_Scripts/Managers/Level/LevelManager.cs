@@ -65,6 +65,8 @@ public class LevelManager : MonoBehaviour
         // Teleport the player and update camera boundaries
         TeleportPlayer(targetSpawn, targetRoomBounds);
 
+        yield return new WaitForSeconds(1f);
+
         // Fade back into the game
         yield return StartCoroutine(FadeFromBlack());
 
