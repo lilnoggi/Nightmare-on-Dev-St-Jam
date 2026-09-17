@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Collider _initialRoomCollider;
 
     [Header("UI Transition")]
+    [SerializeField] private GameObject _fadeCanvas;
     [SerializeField] private Image _fadeOverlay;
     [SerializeField] private float _fadeDuration = 1.5f;
 
@@ -45,6 +46,7 @@ public class LevelManager : MonoBehaviour
     public void TransitionToRoom(Transform targetSpawn, Collider targetRoomBounds)
     {
         StartCoroutine(TransitionRoutine(targetSpawn, targetRoomBounds));
+        Debug.Log($"Room Entered: {targetSpawn.gameObject.name}.");
     }
 
     private IEnumerator TransitionRoutine(Transform targetSpawn, Collider targetRoomBounds)
@@ -64,6 +66,8 @@ public class LevelManager : MonoBehaviour
         // Teleport the player and update camera boundaries
         TeleportPlayer(targetSpawn, targetRoomBounds);
 
+        yield return new WaitForSeconds(1f);
+
         // Fade back into the game
         yield return StartCoroutine(FadeFromBlack());
 
@@ -72,6 +76,8 @@ public class LevelManager : MonoBehaviour
         {
             playerScript.enabled = true;
         }
+
+        _fadeCanvas.SetActive(false);
     }
 
     private void TeleportPlayer(Transform targetSpawn, Collider targetRoomBounds)
@@ -89,6 +95,7 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator FadeToBlack()
     {
+        _fadeCanvas.SetActive(true);
         float timer = 0f;
         Color colour = _fadeOverlay.color;
         while (timer < _fadeDuration)
@@ -102,6 +109,7 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator FadeFromBlack()
     {
+        _fadeCanvas.SetActive(true);
         float timer = 0f;
         Color colour = _fadeOverlay.color;
         while (timer < _fadeDuration)
