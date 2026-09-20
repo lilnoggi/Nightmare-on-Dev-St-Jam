@@ -66,7 +66,7 @@ public class LevelManager : MonoBehaviour
         // Teleport the player and update camera boundaries
         TeleportPlayer(targetSpawn, targetRoomBounds);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
 
         // Fade back into the game
         yield return StartCoroutine(FadeFromBlack());
@@ -76,8 +76,6 @@ public class LevelManager : MonoBehaviour
         {
             playerScript.enabled = true;
         }
-
-        _fadeCanvas.SetActive(false);
     }
 
     private void TeleportPlayer(Transform targetSpawn, Collider targetRoomBounds)
@@ -100,7 +98,7 @@ public class LevelManager : MonoBehaviour
         Color colour = _fadeOverlay.color;
         while (timer < _fadeDuration)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             colour.a = Mathf.Lerp(0f, 1f, timer / _fadeDuration);
             _fadeOverlay.color = colour;
             yield return null;
@@ -114,10 +112,12 @@ public class LevelManager : MonoBehaviour
         Color colour = _fadeOverlay.color;
         while (timer < _fadeDuration)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             colour.a = Mathf.Lerp(1f, 0f, timer / _fadeDuration);
             _fadeOverlay.color = colour;
             yield return null;
         }
+
+        _fadeCanvas.SetActive(false);
     }
 }
