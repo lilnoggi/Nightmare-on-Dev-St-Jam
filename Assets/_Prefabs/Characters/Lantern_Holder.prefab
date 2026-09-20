@@ -208,7 +208,7 @@ MonoBehaviour:
   _pointLight: {fileID: 3456160349305521173}
   _maxOil: 100
   _currentOil: 0
-  _depletionRate: 5
+  _depletionRate: 0.33
   _maxRadius: 15
 --- !u!1001 &8709508433067545892
 PrefabInstance:

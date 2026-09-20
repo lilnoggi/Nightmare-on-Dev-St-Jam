@@ -8,7 +8,7 @@ public class LanternController : MonoBehaviour
     [Header("Oil Settings")]
     [SerializeField] private float _maxOil = 100f;
     [SerializeField] private float _currentOil;
-    [SerializeField] private float _depletionRate = 5f;
+    [SerializeField] private float _depletionRate = 0.33f;
     [SerializeField] private float _maxRadius = 15f;
 
     private bool _isLanternOn = true;

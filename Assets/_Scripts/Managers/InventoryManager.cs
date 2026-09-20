@@ -5,8 +5,8 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
 
-    // Master List of everything the player has collected
-    [SerializeField] private List<CollectableSO> _collectedItems = new List<CollectableSO>();
+    // Maps the specific item data to the total quantity owned
+    [SerializeField] private Dictionary<CollectableSO, int> _inventory = new Dictionary<CollectableSO, int>();
 
     // ----------------------------------------------------------------------------------------
 
@@ -21,18 +21,32 @@ public class InventoryManager : MonoBehaviour
         Instance = this;
     }
 
-    public void AddItem(CollectableSO item)
+    public void AddItem(CollectableSO item, int amount = 1)
     {
-        if (!_collectedItems.Contains(item))
+        if (_inventory.ContainsKey(item))
         {
-            _collectedItems.Add(item);
-            Debug.Log($"Added {item.ItemName} to inventory!");
-            // TODO: UIManager refresh active tab
+            _inventory[item] += amount;
+        }
+        else
+        {
+            _inventory.Add(item, amount);
         }
     }
 
-    public List<CollectableSO> GetCollectedItems()
+    public void RemoveItem(CollectableSO item, int amount = 1)
     {
-        return _collectedItems;
+        if (_inventory.ContainsKey(item))
+        {
+            _inventory[item] -= amount;
+            if (_inventory[item] <= 0)
+            {
+                _inventory.Remove(item); // Clears the slot if completely empty
+            }
+        }
+    }
+
+    public Dictionary<CollectableSO, int> GetInventory()
+    {
+        return _inventory;
     }
 }

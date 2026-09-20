@@ -60,13 +60,13 @@ public class ClockPuzzleController : MonoBehaviour, IInteractable
         // Check if the player has the required item
         if (!_hasAttatchedHand)
         {
-            if (InventoryManager.Instance.GetCollectedItems().Contains(_requiredClockHandItem))
+            if (InventoryManager.Instance.GetInventory().ContainsKey(_requiredClockHandItem))
             {
                 _hasAttatchedHand = true;
                 _minuteHand.gameObject.SetActive(true);
 
                 // Remove the item from the mast inventory list
-                InventoryManager.Instance.GetCollectedItems().Remove(_requiredClockHandItem);
+                InventoryManager.Instance.RemoveItem(_requiredClockHandItem);
             }
             else
             {
