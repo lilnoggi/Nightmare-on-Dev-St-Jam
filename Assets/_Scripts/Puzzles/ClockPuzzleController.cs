@@ -5,6 +5,7 @@ public class ClockPuzzleController : MonoBehaviour, IInteractable
 {
     [Header("Puzzle Setup")]
     [SerializeField] private GameObject _puzzleCanvas;
+    [SerializeField] private GameObject _clockGroup;
     [SerializeField] private GameObject _rewardScreenImage;
     [SerializeField] private Transform _minuteHand;
     [SerializeField] private Transform _hourHand;
@@ -42,6 +43,7 @@ public class ClockPuzzleController : MonoBehaviour, IInteractable
         _inputActions.Player.Interact.performed += ctx => TryExitPuzzle();
         _minuteHand.gameObject.SetActive(false);
         _puzzleCanvas.SetActive(false);
+        _clockGroup.SetActive(false);
         _rewardScreenImage.SetActive(false);
     }
 
@@ -76,6 +78,7 @@ public class ClockPuzzleController : MonoBehaviour, IInteractable
         _isPuzzleActive = true;
         Time.timeScale = 0f;
         _puzzleCanvas.SetActive(true);
+        _clockGroup.SetActive(true);
     }
 
     private void Update()
@@ -134,14 +137,14 @@ public class ClockPuzzleController : MonoBehaviour, IInteractable
     private IEnumerator ShowRewardSequence()
     {
         // Hide the clock show drawer
-        _puzzleCanvas.SetActive(false);
+        _clockGroup.SetActive(false);
         _rewardScreenImage.SetActive(true);
 
         // Wait 3 seconds
         yield return new WaitForSecondsRealtime(3f);
 
         // Close everything and resume game
-        _rewardScreenImage.SetActive(false);
+        _puzzleCanvas.SetActive(false);
         _isPuzzleActive = false;
         Time.timeScale = 1f;
 
