@@ -71,11 +71,11 @@ public class PlayerController : MonoBehaviour
         // Rotate the controller's transform based on input direction
         if (_currentMoveInput > 0.1f)
         {
-            _controller.transform.rotation = Quaternion.Euler(0f, 0f, 0f); // Face Right
+            _controller.transform.rotation = Quaternion.Euler(0f, 90f, 0f); // Face Right
         }
         else if (_currentMoveInput < -0.1f)
         {
-            _controller.transform.rotation = Quaternion.Euler(0f, 180f, 0f); // Face Left
+            _controller.transform.rotation = Quaternion.Euler(0f, -90f, 0f); // Face Left
         }
 
         // Apply simple gravity
