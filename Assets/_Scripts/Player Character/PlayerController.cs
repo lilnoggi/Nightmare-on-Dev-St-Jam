@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private IInteractable _currentInteractable;
     private float _currentMoveInput;
     private Vector3 _velocity;
+    private Vector3 _positionBeforeHiding;
 
     // ---------------------------------------------------------------
 
@@ -236,8 +237,31 @@ public class PlayerController : MonoBehaviour
     {
         if (_currentState == PlayerState.Hiding)
         {
+            // Exit hiding sequence
+            if (_animator != null) 
+            {
+                _animator.SetBool("IsHiding", false);
+                
+                // Restore animation layer weights to 1 so the masks take over again
+                int lanternLayer = _animator.GetLayerIndex("Lantern Layer");
+                int postureLayer = _animator.GetLayerIndex("Posture Layer");
+                if (lanternLayer != -1) _animator.SetLayerWeight(lanternLayer, 1f);
+                if (postureLayer != -1) _animator.SetLayerWeight(postureLayer, 1f);
+            }
+            
+            // Turn the physical lantern back on
+            if (lantern != null) lantern.gameObject.SetActive(true);
+            
+            // Snap back to the 2.5D walking plane
+            transform.position = _positionBeforeHiding;
+            
+            // Face the original left/right direction
+            float resetAngle = _isFacingRight ? 90f : -90f;
+            transform.rotation = Quaternion.Euler(0f, resetAngle, 0f);
+            
+            _controller.enabled = true; // Re-enable physics collisions
+            _currentState = PlayerState.Exploration;
             return;
-            // TODO: Exit hiding with E
         }
 
         if (_currentInteractable != null)
@@ -271,5 +295,63 @@ public class PlayerController : MonoBehaviour
             // Hide the prompt
             UIManager.Instance.HidePrompt();
         }
+    }
+
+    public void StartHiding(HideableSpot spot)
+    {
+        if (_currentState != PlayerState.Hiding)
+        {
+            StartCoroutine(HideSequenceRoutine(spot));
+        }
+    }
+
+    private IEnumerator HideSequenceRoutine(HideableSpot spot)
+    {
+        _currentState = PlayerState.Hiding;
+        _isTurning = true; // Lock standard movement
+
+        // Turn off the physical lantern
+        if (lantern != null) lantern.gameObject.SetActive(false);
+
+        // Disable override layers so the Terrified animation can control the whole body
+        if (_animator != null)
+        {
+            _animator.SetFloat("Speed", 0f);
+            
+            int lanternLayer = _animator.GetLayerIndex("Lantern Layer");
+            int postureLayer = _animator.GetLayerIndex("Posture Layer");
+            if (lanternLayer != -1) _animator.SetLayerWeight(lanternLayer, 0f);
+            if (postureLayer != -1) _animator.SetLayerWeight(postureLayer, 0f);
+        }
+
+        _positionBeforeHiding = transform.position;
+        _controller.enabled = false; // MUST disable to manually move the player on the Z-axis
+
+        // Snap rotation to face the background (0 degrees)
+        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+        // Play the opening animation
+        if (_animator != null)
+        {
+            _animator.SetTrigger("OpenWardrobe");
+        }
+
+        // Wait exactly 1 frame for the Animator to start
+        yield return null;
+
+        // Wait for the open animation to finish
+        while (_animator != null && _animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.95f)
+        {
+            yield return null;
+        }
+
+        // Snap into the wardrobe and turn around to face the camera (180 degrees)
+        transform.position = spot.GetHidePoint().position;
+        transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+
+        // Trigger the continuous terrified loop
+        if (_animator != null) _animator.SetBool("IsHiding", true);
+        
+        _isTurning = false;
     }
 }
