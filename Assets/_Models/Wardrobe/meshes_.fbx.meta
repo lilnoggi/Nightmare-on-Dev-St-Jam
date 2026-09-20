@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2a6c530c9dce0c24281d0da51a078c86
+guid: 31cb3049a516f1c44b33a72939183947
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
@@ -7,48 +7,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: m_body
-    second: {fileID: 2100000, guid: 2997e1957cd57b149917ff5d874b2cd5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: m_cloth
-    second: {fileID: 2100000, guid: c0ac36ca9dabf274b87c919cc86baa2c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: m_hair
-    second: {fileID: 2100000, guid: 11c949708ba43bc4a8358da364be25d5, type: 2}
+      name: M_Meshes
+    second: {fileID: 2100000, guid: 2c5561e2fed03d54cbefa9aa6404f0b3, type: 2}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: main_char_fbx_Body_BaseColor
-    second: {fileID: 2800000, guid: d0ebc46adcd99bd4da66a0e37c073888, type: 3}
+      name: meshes_M_Meshes_BaseColor
+    second: {fileID: 2800000, guid: 0861ea92e71a18242a4c1a9ca12b0958, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: main_char_fbx_Body_Roughness
-    second: {fileID: 2800000, guid: 75d75f57f3335b5478c4ef257aa34c4b, type: 3}
+      name: meshes_M_Meshes_Emissive
+    second: {fileID: 2800000, guid: 3149d03fc9287bc4e92219547978f7b2, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: main_char_fbx_Cloth_BaseColor
-    second: {fileID: 2800000, guid: 7aa4741855c620044a1fc807e5827a15, type: 3}
+      name: meshes_M_Meshes_Metallic
+    second: {fileID: 2800000, guid: a05d94b7f08211c45aa770c19496f84d, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: main_char_fbx_Cloth_Roughness
-    second: {fileID: 2800000, guid: fc385c302eeaa0e41913abc6fcfc544d, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: main_char_fbx_Hair_BaseColor
-    second: {fileID: 2800000, guid: 16132e4b80d5d8b4c8ba3179072efeca, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: main_char_fbx_Hair_Roughness
-    second: {fileID: 2800000, guid: af182f9d67331fa47af56f62b4601afd, type: 3}
+      name: meshes_M_Meshes_Roughness
+    second: {fileID: 2800000, guid: bb6ab08c1c739984eb6cf352b3fcd224, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -79,7 +59,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 8
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -142,7 +122,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.08
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

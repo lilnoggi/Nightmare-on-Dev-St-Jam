@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,6 +22,11 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private LanternController lantern;
 
+    private bool _isFacingRight = false;
+    private bool _isTurning = false;
+    private float _idleTimer = 0f;
+    
+    private Animator _animator;
     private CharacterController _controller;
     private InputSystem_Actions _inputActions; 
     private IInteractable _currentInteractable;
@@ -32,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
+        _animator = GetComponentInChildren<Animator>();
         _inputActions = new InputSystem_Actions();
         _currentStamina = _maxStamina;
 
@@ -56,27 +63,68 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (_currentState == PlayerState.Hiding)
+        // Block movement input if hiding or is turning
+        if (_currentState == PlayerState.Hiding || _isTurning)
         {
-            return; // Lock movement if hiding
+            return; 
         }
 
+        // Check for a direction change
+        if (_currentMoveInput > 0.1f && !_isFacingRight)
+        {
+            StartCoroutine(TurnAroundRoutine(true));
+            return;
+        }
+        else if (_currentMoveInput < -0.1f && _isFacingRight)
+        {
+            StartCoroutine(TurnAroundRoutine(false));
+            return;
+        }
+
+        // Standard movement
         float speed = (_currentState == PlayerState.Sprinting) ? _sprintSpeed : _walkSpeed;
+
+        // Update the Animator Blend Tree
+        float currentAnimSpeed = Mathf.Abs(_currentMoveInput) * speed;
+        if (_animator != null)
+        {
+            _animator.SetFloat("Speed", currentAnimSpeed);
+
+            // Idle timer logic
+            if (currentAnimSpeed < 0.1 && _animator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
+            {
+                _idleTimer += Time.deltaTime;
+                if (_idleTimer >= 10f)
+                {
+                    _animator.SetTrigger("PlayAltIdle");
+                    _idleTimer = 0f;
+                }
+            }
+            else if (currentAnimSpeed >= 0.1)
+            {
+                _idleTimer = 0f;
+            }
+        }
         
         // 2.5D Horizontal Movement (X axis)
         Vector3 move = new Vector3(_currentMoveInput, 0f, 0f);
         _controller.Move(move * speed * Time.deltaTime);
 
         // Flip Logic
-        // Rotate the controller's transform based on input direction
+        float targetAngle = _controller.transform.eulerAngles.y;
+        
         if (_currentMoveInput > 0.1f)
         {
-            _controller.transform.rotation = Quaternion.Euler(0f, 90f, 0f); // Face Right
+            targetAngle = 90f;
         }
         else if (_currentMoveInput < -0.1f)
         {
-            _controller.transform.rotation = Quaternion.Euler(0f, -90f, 0f); // Face Left
+            targetAngle = 270f;
         }
+
+        // Smoothly rotate the character at 800 degrees per second (takes ~0.2s to turn)
+        float smoothAngle = Mathf.MoveTowardsAngle(_controller.transform.eulerAngles.y, targetAngle, 800f * Time.deltaTime);
+        _controller.transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
 
         // Apply simple gravity
         if (_controller.isGrounded && _velocity.y < 0)
@@ -86,6 +134,61 @@ public class PlayerController : MonoBehaviour
 
         _velocity.y += _gravity * Time.deltaTime;
         _controller.Move(_velocity * Time.deltaTime);
+    }
+
+    private IEnumerator TurnAroundRoutine(bool turningRight)
+    {
+        _isTurning = true;
+        _isFacingRight = turningRight;
+
+        // Force speed to 0
+        if (_animator != null)
+        {
+            _animator.SetFloat("Speed", 0f);
+        }
+
+        // Determine which animation state we are targeting
+        string targetStateName = (_currentState == PlayerState.Sprinting) ? "Running Turn 180" : "Walking Turn 180";
+
+        // Trigger the correct animation based on state
+        if (_currentState == PlayerState.Sprinting)
+        {
+            if (_animator != null)
+            {
+                _animator.SetTrigger("TurnSprint"); 
+            }
+        }
+        else
+        {
+            if (_animator != null)
+            {
+                _animator.SetTrigger("TurnWalk");
+            }
+        }
+
+        // Wait until the Animator actually enters the Turn state
+        while (_animator != null && !_animator.GetCurrentAnimatorStateInfo(0).IsName(targetStateName))
+        {
+            yield return null;
+        }
+
+        // Wait until the Animator finishes the turn and begins transitioning back to Movement
+        while (_animator != null && _animator.GetCurrentAnimatorStateInfo(0).IsName(targetStateName))
+        {
+            // The exact frame Unity starts exiting the Turn state, break the loop
+            if (_animator.IsInTransition(0)) 
+            {
+                break;
+            }
+            yield return null;
+        }
+
+        // Snap the physical GameObject to face the new direction in profile
+        float newAngle = _isFacingRight ? 90f : -90f;
+        _controller.transform.rotation = Quaternion.Euler(0f, newAngle, 0f);
+
+        // Unlock controls
+        _isTurning = false;
     }
 
     private void HandleStamina()
