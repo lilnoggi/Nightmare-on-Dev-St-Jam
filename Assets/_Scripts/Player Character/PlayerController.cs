@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum PlayerState { Exploration, Sprinting, Hiding }
+    public enum PlayerState { Exploration, Sprinting, Hiding, Tripping }
     [SerializeField] private PlayerState _currentState = PlayerState.Exploration;
 
     [Header("Movement Settings")]
@@ -15,12 +16,16 @@ public class PlayerController : MonoBehaviour
     [Header("Stamina System")]
     [SerializeField] private float _maxStamina = 100f;
     [SerializeField] private float _currentStamina;
-    [SerializeField] private float _staminaDrainRate = 25f;
-    [SerializeField] private float _staminaRegenRate = 10f;
+    [SerializeField] private float _staminaDrainRate = 12.5f;
+    [SerializeField] private float _staminaRegenRate = 15f;
     [SerializeField] private float _hidingRegenMultiplier = 2.5f; 
 
     [Header("References")]
     [SerializeField] private LanternController lantern;
+
+    [Header("Post Processing")]
+    [SerializeField] private Volume _globalVolume;
+    private Vignette _vignette;
 
     private bool _isFacingRight = false;
     private bool _isTurning = false;
@@ -49,6 +54,11 @@ public class PlayerController : MonoBehaviour
         _inputActions.Player.Interact.performed += ctx => OnInteract();
         _inputActions.Player.ToggleInventory.performed += ctx => UIManager.Instance.ToggleInventory();
         _inputActions.Player.LightToggle.performed += ctx => lantern.ToggleLantern();
+
+        if (_globalVolume != null)
+        {
+            _globalVolume.profile.TryGet(out _vignette);
+        }
     }
 
     private void OnEnable() => _inputActions.Enable();
@@ -65,7 +75,7 @@ public class PlayerController : MonoBehaviour
     private void HandleMovement()
     {
         // Block movement input if hiding or is turning
-        if (_currentState == PlayerState.Hiding || _isTurning)
+        if (_currentState == PlayerState.Hiding || _currentState == PlayerState.Tripping || _isTurning)
         {
             return; 
         }
@@ -203,7 +213,7 @@ public class PlayerController : MonoBehaviour
                 if (_currentStamina <= 0)
                 {
                     _currentStamina = 0;
-                    _currentState = PlayerState.Exploration; // Exhausted, force walk
+                    StartCoroutine(TripSequenceRoutine());
                 }
             }
         }
@@ -215,6 +225,15 @@ public class PlayerController : MonoBehaviour
         }
         
         _currentStamina = Mathf.Clamp(_currentStamina, 0, _maxStamina);
+
+        // Dynamically adjust vignette intensity based on stamina
+        if (_vignette != null)
+        {
+            float staminaPercent = _currentStamina / _maxStamina;
+            
+            // Full stamina = 0.489 (baseline), Empty stamina = 0.8 (heavy tunnel vision)
+            _vignette.intensity.value = Mathf.Lerp(0.8f, 0.489f, staminaPercent);
+        }
     }
 
     private void OnSprintStart()
@@ -231,6 +250,33 @@ public class PlayerController : MonoBehaviour
         {
             _currentState = PlayerState.Exploration;
         }
+    }
+
+    private IEnumerator TripSequenceRoutine()
+    {
+        _currentState = PlayerState.Tripping;
+
+        // Force blend tree speed to 0
+        if (_animator != null)
+        {
+            _animator.SetFloat("Speed", 0f);
+            _animator.SetTrigger("Trip");
+        }
+
+        // Wait until the animator transitions into the tripping state
+        while (_animator != null && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Tripping"))
+        {
+            yield return null;
+        }
+
+        // Keep controls locked until animator returns to movement
+        while (_animator != null && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
+        {
+            yield return null;
+        }
+
+        // Give controls back to the player
+        _currentState = PlayerState.Exploration;
     }
 
     private void OnInteract()

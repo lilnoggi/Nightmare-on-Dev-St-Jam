@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6845039756890315811}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.70710677, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -5.896999, y: 0.873, z: -34.133}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _currentState: 0
-  _walkSpeed: 3
+  _walkSpeed: 2
   _sprintSpeed: 6
   _gravity: -9.81
   _maxStamina: 100
@@ -57,6 +57,7 @@ MonoBehaviour:
   _staminaRegenRate: 10
   _hidingRegenMultiplier: 2.5
   lantern: {fileID: 8725654017515087130}
+  _globalVolume: {fileID: 0}
 --- !u!143 &3522333886060996828
 CharacterController:
   m_ObjectHideFlags: 0
@@ -75,13 +76,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.22
-  m_Radius: 0.2
+  m_Height: 0.78
+  m_Radius: 0.11
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: -0.08, z: 0}
+  m_Center: {x: 0, y: -0.33, z: 0}
 --- !u!54 &6761007810122177007
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -156,6 +157,18 @@ PrefabInstance:
     - target: {fileID: 3068367959249062876, guid: d0ae9a40458d8f0499b3fd3e0372d680, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958846908135703265, guid: d0ae9a40458d8f0499b3fd3e0372d680, type: 3}
+      propertyPath: m_Height
+      value: 0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958846908135703265, guid: d0ae9a40458d8f0499b3fd3e0372d680, type: 3}
+      propertyPath: m_Radius
+      value: 0.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958846908135703265, guid: d0ae9a40458d8f0499b3fd3e0372d680, type: 3}
+      propertyPath: m_Center.y
+      value: 0.36
       objectReference: {fileID: 0}
     - target: {fileID: 8191183265599765868, guid: d0ae9a40458d8f0499b3fd3e0372d680, type: 3}
       propertyPath: m_Name
