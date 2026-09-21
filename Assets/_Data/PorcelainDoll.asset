@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 717d162f7e46ff743b5a117269d03dac, type: 3}
-  m_Name: WoodenSpinningTop
+  m_Name: PorcelainDoll
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSO
-  ItemName: Wooden Spinning Top
+  ItemName: Porcelain Doll
   Category: 1
-  DetailedImage: {fileID: 0}
-  LoreText: A brightly painted top that has been scuffed and chipped from being thrown against a wall.
+  DetailedImage: {fileID: 21300000, guid: 517729f5f12e8b24799979c2fc69dfd1, type: 3}
+  LoreText: A porcelain doll. I think this belonged to my friend.

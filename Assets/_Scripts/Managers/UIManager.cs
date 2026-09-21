@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,10 +11,15 @@ public class UIManager : MonoBehaviour
     [Header("Interaction HUD")]
     [SerializeField] private Image _promptImage;
 
+    [Header("Feedback Panel")]
+    [SerializeField] private GameObject _feedbackPanel;
+    [SerializeField] private TextMeshProUGUI _feedbackDialogue;
+
     [Header("Inventory HUD")]
     [SerializeField] private GameObject _inventoryCanvas;
 
     private bool _isInventoryOpen = false;
+    private Coroutine _feedbackCoroutine;
 
     // ---------------------------------------------------------
 
@@ -30,6 +37,12 @@ public class UIManager : MonoBehaviour
         HidePrompt();
 
         _inventoryCanvas.gameObject.SetActive(false);
+
+        if (_feedbackPanel != null && _feedbackDialogue != null)
+        {
+            _feedbackDialogue.text = "";
+            _feedbackPanel.SetActive(false);
+        }
     }
 
     // --- PROMPT HELPERS ---
@@ -46,6 +59,28 @@ public class UIManager : MonoBehaviour
     public void HidePrompt()
     {
         _promptImage.gameObject.SetActive(false);
+    }
+
+    // --- FEEDBACK HELPERS ---
+
+    public void ShowFeedback(string message)
+    {
+        // Stop the previous timer if the player searches multiple things quickly
+        if (_feedbackCoroutine != null)
+        {
+            StopCoroutine(_feedbackCoroutine);
+        }
+
+        _feedbackCoroutine = StartCoroutine(FeedbackRoutine(message));
+    }
+
+    private IEnumerator FeedbackRoutine(string message)
+    {
+        _feedbackPanel.SetActive(true);
+        _feedbackDialogue.text = message;
+        yield return new WaitForSeconds(2.5f);
+        _feedbackDialogue.text = "";
+        _feedbackPanel.SetActive(false);
     }
 
     // --- INVENTORY HELPERS ---

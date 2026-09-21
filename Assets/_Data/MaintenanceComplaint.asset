@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSO
   ItemName: Maintenance Complaint
   Category: 1
-  DetailedImage: {fileID: 0}
+  DetailedImage: {fileID: 21300000, guid: b2fdd8982a8f8684692e66264d1a0399, type: 3}
   LoreText: "A note from the groundskeeper. \u201CThe pipes in the east wing are vibrating again. And I swear the floorboards are buckling upwards. This house feels like it\u2019s breathing.\u201D"

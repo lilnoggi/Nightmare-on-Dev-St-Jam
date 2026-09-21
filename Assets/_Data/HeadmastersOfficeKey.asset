@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSO
   ItemName: Headmaster's Office Key
   Category: 0
-  DetailedImage: {fileID: 21300000, guid: ac115724fbef5cc43a30e0433a4d02a1, type: 3}
+  DetailedImage: {fileID: 21300000, guid: 77c1fa68a23451c468d3d20e9dcf2116, type: 3}
   LoreText: The key to the headmaster's office.

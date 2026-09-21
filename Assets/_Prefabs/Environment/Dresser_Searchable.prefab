@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8959257715247830509}
   - component: {fileID: 9127880616530431781}
+  - component: {fileID: 838614517003241915}
+  - component: {fileID: 1043097963478341248}
   m_Layer: 0
   m_Name: Dresser_Searchable
   m_TagString: Untagged
@@ -92,3 +94,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &838614517003241915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7539816171709792654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2444db0a26ab9444484834f8ca4deb12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SearchableObject
+  _lootItem: {fileID: 0}
+  _searchPromptIcon: {fileID: 21300000, guid: 650f700fe483cda4d84487c357d956be, type: 3}
+--- !u!65 &1043097963478341248
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7539816171709792654}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1.9672943}
+  m_Center: {x: 0, y: 0, z: -0.88364714}
