@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 717d162f7e46ff743b5a117269d03dac, type: 3}
-  m_Name: TarnishedTinSoldier
+  m_Name: JackInTheBox
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSO
-  ItemName: Tarnished Tin Soldier
+  ItemName: Jack In The Box
   Category: 1
-  DetailedImage: {fileID: 0}
-  LoreText: A heavy lead toy soldier. Its rifle has been snapped off, and it feels unusually cold to the touch.
+  DetailedImage: {fileID: 21300000, guid: 00b7473ab5df37b4bbf68d542a7c3849, type: 3}
+  LoreText: A heavy Jack in the Box, and it feels unusually cold to the touch.

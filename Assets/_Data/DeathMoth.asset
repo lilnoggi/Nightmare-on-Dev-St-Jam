@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 717d162f7e46ff743b5a117269d03dac, type: 3}
-  m_Name: MaintenanceComplaint
+  m_Name: DeathMoth
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSO
-  ItemName: Maintenance Complaint
+  ItemName: Death Moth
   Category: 1
-  DetailedImage: {fileID: 21300000, guid: b2fdd8982a8f8684692e66264d1a0399, type: 3}
-  LoreText: "A note from the groundskeeper. \u201CThe pipes in the east wing are vibrating again. And I swear the floorboards are buckling upwards. This house feels like it\u2019s breathing.\u201D"
+  DetailedImage: {fileID: 21300000, guid: ba12a894acc27dc44979049d31d72e7a, type: 3}
+  LoreText: A death moth. It gives me chills down my spine.

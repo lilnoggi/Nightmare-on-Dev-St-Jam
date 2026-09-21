@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717d162f7e46ff743b5a117269d03dac, type: 3}
   m_Name: CrackedPorcelainDoll
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSO
-  ItemName: Cracked Porcelain Doll
+  ItemName: Cracked Porcelain Doll Head
   Category: 1
-  DetailedImage: {fileID: 0}
+  DetailedImage: {fileID: 21300000, guid: c9e36b251fb415948b36a945077c3302, type: 3}
   LoreText: "A small, fragile doll missing one of its glass eyes. The name \u201CLizzie\u201D is scratched into the bottom of its shoe."

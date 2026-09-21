@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CollectableSO
   ItemName: Oil Flask
   Category: 2
-  DetailedImage: {fileID: 0}
+  DetailedImage: {fileID: 21300000, guid: cf0368431eefd5445ad8759d87ec0161, type: 3}
   LoreText: Can be used to refill the oil lamp.

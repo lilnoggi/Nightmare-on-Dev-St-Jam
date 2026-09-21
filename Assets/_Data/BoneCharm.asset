@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 717d162f7e46ff743b5a117269d03dac, type: 3}
-  m_Name: MaintenanceComplaint
+  m_Name: BoneCharm
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSO
-  ItemName: Maintenance Complaint
+  ItemName: Strange Charm
   Category: 1
-  DetailedImage: {fileID: 21300000, guid: b2fdd8982a8f8684692e66264d1a0399, type: 3}
-  LoreText: "A note from the groundskeeper. \u201CThe pipes in the east wing are vibrating again. And I swear the floorboards are buckling upwards. This house feels like it\u2019s breathing.\u201D"
+  DetailedImage: {fileID: 21300000, guid: 9972601d7f58abe4db54e74e497a9db7, type: 3}
+  LoreText: A strange charm with a bone attatched.
