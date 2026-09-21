@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 717d162f7e46ff743b5a117269d03dac, type: 3}
-  m_Name: Timestamp_GrandfatherClock_Quest
+  m_Name: PocketWatch
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSO
-  ItemName: 03:15
+  ItemName: Pocket Watch
   Category: 0
-  DetailedImage: {fileID: 0}
-  LoreText: "A torn note with a time stamp written down. \u201C03:15\u201D"
+  DetailedImage: {fileID: 21300000, guid: 1c1416cb490d75d4fae960280af744aa, type: 3}
+  LoreText: It's time is stuck on 03:15.

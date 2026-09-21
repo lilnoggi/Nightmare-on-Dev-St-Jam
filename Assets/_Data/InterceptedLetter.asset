@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSO
   ItemName: Intercepted Letter
   Category: 1
-  DetailedImage: {fileID: 0}
+  DetailedImage: {fileID: 21300000, guid: b2fdd8982a8f8684692e66264d1a0399, type: 3}
   LoreText: "An unopened, tear-stained letter addressed to a child, marked with a red \u201CRETURN TO SENDER - PATIENT UNFIT FOR CORRESPONDENCE\u201D stamp."

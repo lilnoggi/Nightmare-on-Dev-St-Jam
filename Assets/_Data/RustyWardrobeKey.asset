@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSO
   ItemName: Rusty Wardrobe Key
   Category: 0
-  DetailedImage: {fileID: 0}
+  DetailedImage: {fileID: 21300000, guid: ec35ff652d632c74fbfbeae911d997f5, type: 3}
   LoreText: A small, jagged key found in a staff breakroom drawer.
