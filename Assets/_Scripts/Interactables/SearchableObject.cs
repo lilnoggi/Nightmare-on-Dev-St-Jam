@@ -1,4 +1,6 @@
 using UnityEngine;
+using FMOD.Studio;
+using FMODUnity;
 
 public class SearchableObject : MonoBehaviour, IInteractable
 {
@@ -11,6 +13,12 @@ public class SearchableObject : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        // Plays FMOD Sound
+        EventInstance ItemGet = RuntimeManager.CreateInstance("event:/ItemGet");
+        RuntimeManager.AttachInstanceToGameObject(ItemGet, gameObject, GetComponent<Rigidbody>());
+        ItemGet.start();
+        ItemGet.release();
+
         if (_hasBeenSearched) return;
 
         if (_lootItem != null)
@@ -25,6 +33,7 @@ public class SearchableObject : MonoBehaviour, IInteractable
         {
             UIManager.Instance.ShowFeedback("Nothing but dust in here...");
         }
+
 
         // Lock the object from being searched again
         _hasBeenSearched = true;

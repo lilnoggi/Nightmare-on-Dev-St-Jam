@@ -23,6 +23,10 @@ public class DoorController : MonoBehaviour, IInteractable
         {
             Debug.LogWarning("Door is missing transition references!");
         }
+        FMOD.Studio.EventInstance DoorSound = FMODUnity.RuntimeManager.CreateInstance("event:/Door");
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(DoorSound, gameObject, GetComponent<Rigidbody>());
+        DoorSound.start();
+        DoorSound.release();
     }
 
     public Sprite GetPromptIcon()

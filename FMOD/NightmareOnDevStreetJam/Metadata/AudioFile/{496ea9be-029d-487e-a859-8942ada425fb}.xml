@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{496ea9be-029d-487e-a859-8942ada425fb}">
+		<property name="assetPath">
+			<value>Music/GeneralAtmos.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>722.93545833333337</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{7e93dbd0-770d-4be6-8a28-5612c7b39c05}</destination>
+		</relationship>
+	</object>
+</objects>
