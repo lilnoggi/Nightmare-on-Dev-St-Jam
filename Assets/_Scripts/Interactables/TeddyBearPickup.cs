@@ -13,19 +13,15 @@ public class TeddyBearPickup : MonoBehaviour, IInteractable
         if (_hasBeenCollected) return;
         _hasBeenCollected = true;
 
-        // Add the bear to the inventory dictionary
         InventoryManager.Instance.AddItem(_teddyBearItem);
-
-        // Display an eerie text prompt on the HUD
         UIManager.Instance.ShowFeedback("The air turns freezing cold... something is awake.");
 
-        // Awaken the hand monster to start the chase sequence
-        if (_handMonster != null)
+        // Trigger the global sequence instead of a single hand
+        if (ChaseManager.Instance != null)
         {
-            _handMonster.SetActive(true);
+            ChaseManager.Instance.StartChaseSequence();
         }
 
-        // Remove the bear from the room so it can't be picked up twice
         Destroy(gameObject);
     }
 

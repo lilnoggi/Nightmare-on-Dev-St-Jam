@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6761007810122177007}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,6 +56,7 @@ MonoBehaviour:
   _staminaDrainRate: 25
   _staminaRegenRate: 10
   _hidingRegenMultiplier: 2.5
+  _maxHideTime: 15
   lantern: {fileID: 8725654017515087130}
   _globalVolume: {fileID: 0}
 --- !u!143 &3522333886060996828

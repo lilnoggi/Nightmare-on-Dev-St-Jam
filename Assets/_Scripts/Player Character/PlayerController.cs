@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _staminaRegenRate = 15f;
     [SerializeField] private float _hidingRegenMultiplier = 2.5f; 
 
+    [Header("Hiding Settings")]
+    [SerializeField] private float _maxHideTime = 15f;
+
     [Header("References")]
     [SerializeField] private LanternController lantern;
 
@@ -30,6 +33,7 @@ public class PlayerController : MonoBehaviour
     private bool _isFacingRight = false;
     private bool _isTurning = false;
     private float _idleTimer = 0f;
+    private float _currentHideTime = 0f;
     
     private Animator _animator;
     private CharacterController _controller;
@@ -38,6 +42,11 @@ public class PlayerController : MonoBehaviour
     private float _currentMoveInput;
     private Vector3 _velocity;
     private Vector3 _positionBeforeHiding;
+
+    public bool IsHiding()
+    {
+        return _currentState == PlayerState.Hiding;
+    }
 
     // ---------------------------------------------------------------
 
@@ -69,6 +78,7 @@ public class PlayerController : MonoBehaviour
         _currentMoveInput = _inputActions.Player.Move.ReadValue<float>();
         
         HandleStamina();
+        HandleVignetteAndCamping();
         HandleMovement();
     }
 
@@ -225,15 +235,6 @@ public class PlayerController : MonoBehaviour
         }
         
         _currentStamina = Mathf.Clamp(_currentStamina, 0, _maxStamina);
-
-        // Dynamically adjust vignette intensity based on stamina
-        if (_vignette != null)
-        {
-            float staminaPercent = _currentStamina / _maxStamina;
-            
-            // Full stamina = 0.489 (baseline), Empty stamina = 0.8 (heavy tunnel vision)
-            _vignette.intensity.value = Mathf.Lerp(0.8f, 0.489f, staminaPercent);
-        }
     }
 
     private void OnSprintStart()
@@ -286,6 +287,41 @@ public class PlayerController : MonoBehaviour
 
         // Give control back to the player
         _currentState = PlayerState.Exploration;
+    }
+
+    private void HandleVignetteAndCamping()
+    {
+        if (_currentState == PlayerState.Hiding)
+        {
+            _currentHideTime += Time.deltaTime;
+            
+            if (_vignette != null)
+            {
+                // Scales from baseline (0.489) to total blackout (1f)
+                float hidePercent = _currentHideTime / _maxHideTime;
+                _vignette.intensity.value = Mathf.Lerp(0.489f, 1f, hidePercent);
+            }
+
+            if (_currentHideTime >= _maxHideTime)
+            {
+                _currentHideTime = 0f; // Prevent spamming
+                _currentState = PlayerState.Tripping; // Temporarily lock controls
+                
+                Debug.Log("Timer Expired: Caught by the Hand!");
+                // TODO: Instantiate the hand prefab, play the grab animation, and trigger Game Over
+            }
+        }
+        else
+        {
+            _currentHideTime = 0f;
+            
+            // Standard stamina vignette logic
+            if (_vignette != null)
+            {
+                float staminaPercent = _currentStamina / _maxStamina;
+                _vignette.intensity.value = Mathf.Lerp(0.8f, 0.489f, staminaPercent);
+            }
+        }
     }
 
     private void OnInteract()
