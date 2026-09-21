@@ -6,3 +6,7 @@
 
 # FMOD Sound Banks
 *.bank filter=lfs diff=lfs merge=lfs -text
+
+# FMOD told em eto put these here - SA
+Assets/Plugins/FMOD/**/*.bundle text eol=lf
+Assets/Plugins/FMOD/**/Info.plist text eol=lf
