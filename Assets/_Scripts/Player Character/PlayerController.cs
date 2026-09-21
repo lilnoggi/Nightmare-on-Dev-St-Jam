@@ -256,26 +256,35 @@ public class PlayerController : MonoBehaviour
     {
         _currentState = PlayerState.Tripping;
 
-        // Force blend tree speed to 0
         if (_animator != null)
         {
             _animator.SetFloat("Speed", 0f);
             _animator.SetTrigger("Trip");
         }
 
-        // Wait until the animator transitions into the tripping state
-        while (_animator != null && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Tripping"))
+        // Determine slide direction based on facing direction (Right = +1, Left = -1)
+        float slideDirection = _isFacingRight ? 1f : -1f;
+        float slideDistance = 3.5f; // Adjust this to slide further or shorter
+        float tripDuration = 0.5f;  // How long the forward lunge lasts
+        float elapsedTime = 0f;
+
+        // Drive the parent player object forward via the CharacterController
+        while (elapsedTime < tripDuration)
         {
+            float moveStep = (slideDistance / tripDuration) * Time.deltaTime;
+            _controller.Move(new Vector3(slideDirection * moveStep, 0f, 0f));
+
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        // Keep controls locked until animator returns to movement
+        // Keep controls locked until the animation plays through standing up and returns to Movement
         while (_animator != null && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
         {
             yield return null;
         }
 
-        // Give controls back to the player
+        // Give control back to the player
         _currentState = PlayerState.Exploration;
     }
 

@@ -47,7 +47,7 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
@@ -386,7 +386,7 @@ ModelImporter:
     - name: mixamorig:RightLeg
       parentName: mixamorig:RightUpLeg
       position: {x: -0, y: 0.166136, z: 0}
-      rotation: {x: -0.25407588, y: -0.01912857, z: 0.018887775, w: 0.9668106}
+      rotation: {x: -0.2540759, y: -0.019128572, z: 0.018887777, w: 0.96681064}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:RightFoot
       parentName: mixamorig:RightLeg
@@ -506,7 +506,7 @@ ModelImporter:
     - name: mixamorig:RightHandIndex3
       parentName: mixamorig:RightHandIndex2
       position: {x: 0.000208, y: 0.017848, z: 0.003384}
-      rotation: {x: 0.08297426, y: -0.0013538233, z: 0.0017305783, w: 0.99654925}
+      rotation: {x: 0.08297427, y: -0.0013538233, z: 0.0017305784, w: 0.99654925}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:RightHandIndex4
       parentName: mixamorig:RightHandIndex3
